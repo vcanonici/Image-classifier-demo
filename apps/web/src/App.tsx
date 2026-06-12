@@ -12,6 +12,7 @@ export default function App() {
   const [model, setModel] = useState<ModelArtifact | null>(null);
   const [result, setResult] = useState<InferenceResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [logoFailed, setLogoFailed] = useState(false);
   const pendingImage = useRef<ImageData | null>(null);
   const drawingVersion = useRef(0);
   const processedVersion = useRef(-1);
@@ -77,19 +78,43 @@ export default function App() {
 
   return (
     <main className="app-shell">
+      <div className="brand-bar">
+        <div className="brand-lockup">
+          {!logoFailed ? (
+            <img
+              className="piep-logo"
+              src={`${import.meta.env.BASE_URL}piep-logo.png`}
+              alt="PIEP - Pólo de Inovação em Engenharia de Polímeros"
+              onError={() => setLogoFailed(true)}
+            />
+          ) : (
+            <div className="piep-logo-fallback">
+              <strong>PIEP</strong>
+              <span>Pólo de Inovação em Engenharia de Polímeros</span>
+            </div>
+          )}
+        </div>
+        <div className="brand-context">
+          <span>IA aplicada</span>
+          <span>Digitalização</span>
+          <span>Engenharia</span>
+        </div>
+      </div>
+
       <header className="hero">
-        <div>
-          <span className="eyebrow">MNIST · rede neural no navegador</span>
-          <h1>Veja a rede pensar.</h1>
+        <div className="hero-content">
+          <span className="eyebrow">Demonstração de IA aplicada · PIEP</span>
+          <h1>Rede neural MNIST em tempo real</h1>
           <p>
-            Desenhe um número. Cada traço atravessa 784 pixels, duas camadas ocultas e dez
-            hipóteses, tudo no seu dispositivo.
+            Desenhe um dígito e acompanhe como uma rede neural transforma pixels em
+            ativações, camadas intermédias e probabilidades de classificação, diretamente
+            no navegador.
           </p>
         </div>
-        <div className="model-stat">
+        <div className="institutional-stat">
           <span>Precisão no teste</span>
           <strong>{(model.metrics.testAccuracy * 100).toFixed(2)}%</strong>
-          <small>{model.metrics.epochs} épocas · inferência local</small>
+          <small>inferência local · sem backend</small>
         </div>
       </header>
 
@@ -101,11 +126,14 @@ export default function App() {
         <NetworkDiagram model={model} result={result} />
       </div>
 
-      <footer>
-        <span>PyTorch no treino. TypeScript na inferência.</span>
-        <a href="https://github.com/3b1b/videos/tree/master/_2017/nn">
-          Arquitetura inspirada na explicação do 3Blue1Brown
-        </a>
+      <footer className="institutional-footer">
+        <div>
+          <strong>Demonstração educativa de IA aplicada · PIEP</strong>
+          <a href="https://github.com/3b1b/videos/tree/master/_2017/nn">
+            Referência pedagógica: 3Blue1Brown
+          </a>
+        </div>
+        <span>Treino em PyTorch · inferência em TypeScript no navegador</span>
       </footer>
     </main>
   );

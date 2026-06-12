@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 
 test("loads the demo and responds to drawing", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Veja a rede pensar." })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Rede neural MNIST em tempo real" }),
+  ).toBeVisible();
   const canvas = page.getByLabel("Área para desenhar um dígito de zero a nove");
   const box = await canvas.boundingBox();
   if (box === null) {

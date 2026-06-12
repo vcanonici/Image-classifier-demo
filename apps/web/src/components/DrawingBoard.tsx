@@ -63,8 +63,8 @@ export function DrawingBoard({ onDrawingChange }: DrawingBoardProps) {
     <section className="drawing-panel" aria-labelledby="drawing-title">
       <div className="section-heading">
         <div>
-          <span className="eyebrow">Entrada</span>
-          <h2 id="drawing-title">Desenhe um dígito</h2>
+          <span className="eyebrow">Canvas 28 × 28</span>
+          <h2 id="drawing-title">Entrada visual</h2>
         </div>
         <button className="ghost-button" type="button" onClick={clearCanvas}>
           Limpar
@@ -87,7 +87,7 @@ export function DrawingBoard({ onDrawingChange }: DrawingBoardProps) {
       />
       <div className="drawing-controls">
         <label>
-          <span>Pincel</span>
+          <span>Espessura</span>
           <input
             aria-label="Tamanho do pincel"
             type="range"

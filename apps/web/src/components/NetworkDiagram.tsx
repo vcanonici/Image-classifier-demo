@@ -31,9 +31,9 @@ export function NetworkDiagram({ model, result }: NetworkDiagramProps) {
       <div className="section-heading network-heading">
         <div>
           <span className="eyebrow">Ativações em tempo real</span>
-          <h2 id="network-title">784 → 16 → 16 → 10</h2>
+          <h2 id="network-title">Visualização da rede</h2>
         </div>
-        <span className="fps-badge">máx. 24 FPS</span>
+        <span className="fps-badge">24 FPS máx.</span>
       </div>
       <div className="network-scroll">
         <svg
@@ -42,16 +42,6 @@ export function NetworkDiagram({ model, result }: NetworkDiagramProps) {
           role="img"
           aria-label="Diagrama das ativações da rede neural"
         >
-          <defs>
-            <filter id="node-glow">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
           <LayerLabel x={132} label="28 × 28 pixels" />
           <LayerLabel x={410} label="hidden 1" />
           <LayerLabel x={650} label="hidden 2" />
@@ -95,18 +85,18 @@ export function NetworkDiagram({ model, result }: NetworkDiagramProps) {
               );
             })}
           </g>
-          <NodeLayer points={hidden1Points} activations={result.hidden1} color="cyan" />
-          <NodeLayer points={hidden2Points} activations={result.hidden2} color="violet" />
+          <NodeLayer points={hidden1Points} activations={result.hidden1} color="primary" />
+          <NodeLayer points={hidden2Points} activations={result.hidden2} color="secondary" />
           <NodeLayer
             points={outputPoints}
             activations={result.probabilities}
-            color="yellow"
+            color="highlight"
             labels
           />
         </svg>
       </div>
       <p className="diagram-note">
-        As ligações da entrada mostram as 64 contribuições mais fortes do desenho atual.
+        Mostra as conexões mais relevantes entre entrada, camadas ocultas e saída.
       </p>
     </section>
   );
@@ -120,7 +110,7 @@ function NodeLayer({
 }: {
   points: Point[];
   activations: number[];
-  color: "cyan" | "violet" | "yellow";
+  color: "primary" | "secondary" | "highlight";
   labels?: boolean;
 }) {
   const maximum = Math.max(...activations, 0.0001);
@@ -129,7 +119,7 @@ function NodeLayer({
       {points.map((point, index) => {
         const normalized = Math.min(1, Math.max(0, activations[index] / maximum));
         return (
-          <g key={index} filter={normalized > 0.7 ? "url(#node-glow)" : undefined}>
+          <g key={index}>
             <circle
               className={`network-node ${color}`}
               cx={point.x}
@@ -234,9 +224,9 @@ function ConnectionLine({
       y1={source.y}
       x2={target.x}
       y2={target.y}
-      stroke={contribution >= 0 ? "#38d9ff" : "#ff4f91"}
-      strokeOpacity={0.035 + strength * 0.42}
-      strokeWidth={0.35 + strength * 1.6}
+      stroke={contribution >= 0 ? "#008DBB" : "#7A929E"}
+      strokeOpacity={0.045 + strength * 0.34}
+      strokeWidth={0.35 + strength * 1.35}
     />
   );
 }

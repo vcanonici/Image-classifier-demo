@@ -9,7 +9,7 @@ export function PredictionPanel({ result }: PredictionPanelProps) {
   return (
     <section className="prediction-panel" aria-live="polite">
       <div className="prediction-main">
-        <span className="eyebrow">Previsão</span>
+        <span className="eyebrow">Classificação</span>
         <strong>{result.prediction}</strong>
         <span>{(confidence * 100).toFixed(1)}% de confiança</span>
       </div>
