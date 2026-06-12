@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.16.0"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install Python dependencies
+        run: uv sync --frozen
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci
+      - name: Validate Python
+        run: |
+          uv run ruff check training tests
+          uv run pyright training
+          uv run pytest
+      - name: Validate web
+        working-directory: apps/web
+        run: |
+          npm run lint
+          npm run test
+          npm run build
+      - name: Install Playwright browser
+        working-directory: apps/web
+        run: npx playwright install --with-deps chromium
+      - name: Validate responsive interaction
+        working-directory: apps/web
+        run: npm run test:e2e
