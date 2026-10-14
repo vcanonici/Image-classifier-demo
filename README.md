@@ -1,8 +1,8 @@
 # Rede Neural MNIST Interativa
 
 Demo educativa de uma rede neural `784 → 16 → 16 → 10`. Desenhe um dígito com mouse,
-caneta ou toque e acompanhe, em tempo real, os pixels, ativações ocultas, conexões e
-probabilidades da classificação.
+caneta ou toque **ou carregue uma ou várias imagens locais** (PNG, JPEG e WebP) para
+classificação. Acompanhe os pixels, ativações ocultas, conexões e probabilidades da rede.
 
 O modelo é treinado em Python com PyTorch. O checkpoint próprio é exportado para um contrato
 JSON e a inferência roda integralmente em TypeScript no navegador. A aplicação publicada não
@@ -92,6 +92,27 @@ inferência no navegador é versionado.
 - layout automático para desktop, telemóvel em retrato e telemóvel em paisagem;
 - suporte unificado a mouse, caneta e toque com Pointer Events;
 - todas as conexões entre camadas pequenas e as 64 maiores contribuições da entrada.
+
+### Carregar imagens
+
+Use o controlo **Carregar imagens** para selecionar até **20 ficheiros** (PNG, JPEG ou WebP,
+até 8 MB cada; dimensões máximas de 4096 × 4096). A aplicação mostra uma pré-visualização,
+o dígito previsto e a pontuação para cada imagem. Selecione qualquer resultado para
+examinar as respetivas ativações e conexões no diagrama.
+
+O pré-processamento estima a cor do fundo pelos cantos da imagem, separa a tinta por
+diferença de cor e adapta-a ao formato **28 × 28** usado no treino. Isto permite testar
+imagens com fundos claros, escuros ou coloridos. Imagens com gradientes, ruído, vários
+dígitos ou fundos complexos podem continuar a causar erros de classificação.
+
+**Não há upload para um servidor**: o ficheiro é lido localmente pelo navegador; o
+modelo JSON já carregado realiza a inferência em TypeScript. O nome do ficheiro é
+usado apenas como identificação visual, **nunca como entrada da rede neural**.
+
+Para testar as nove imagens do desafio da formação, descarregue-as de
+[Formacao-de-IA/Dia2/Desafio](https://github.com/vcanonici/Formacao-de-IA/tree/main/Dia2/Desafio)
+e selecione-as no campo de upload. As previsões são independentes dos rótulos nos nomes
+dos ficheiros; a aplicação não garante 9/9 em imagens fora do MNIST.
 
 ## Publicação
 
