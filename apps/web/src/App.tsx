@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { DrawingBoard } from "./components/DrawingBoard";
+import { ImageUpload } from "./components/ImageUpload";
 import { NetworkDiagram } from "./components/NetworkDiagram";
 import { PredictionPanel } from "./components/PredictionPanel";
 import { isFrameDue } from "./frameBudget";
@@ -13,6 +14,7 @@ export default function App() {
   const [result, setResult] = useState<InferenceResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [logoFailed, setLogoFailed] = useState(false);
+  const [inputSource, setInputSource] = useState("Desenho no canvas");
   const pendingImage = useRef<ImageData | null>(null);
   const drawingVersion = useRef(0);
   const processedVersion = useRef(-1);
@@ -55,6 +57,13 @@ export default function App() {
   const handleDrawingChange = useCallback((image: ImageData) => {
     pendingImage.current = image;
     drawingVersion.current += 1;
+    setInputSource("Desenho no canvas");
+  }, []);
+
+  const handleUploadedResult = useCallback((nextResult: InferenceResult, name: string) => {
+    pendingImage.current = null;
+    setResult(nextResult);
+    setInputSource("Imagem carregada: " + name);
   }, []);
 
   if (error !== null) {
@@ -106,9 +115,9 @@ export default function App() {
           <span className="eyebrow">Demonstração de IA aplicada · PIEP</span>
           <h1>Rede neural MNIST em tempo real</h1>
           <p>
-            Desenhe um dígito e acompanhe como uma rede neural transforma pixels em
-            ativações, camadas intermédias e probabilidades de classificação, diretamente
-            no navegador.
+            Desenhe um dígito ou carregue imagens do computador e acompanhe como uma rede
+            neural transforma pixels em ativações, camadas intermédias e probabilidades
+            de classificação, diretamente no navegador.
           </p>
         </div>
         <div className="institutional-stat">
@@ -121,6 +130,8 @@ export default function App() {
       <div className="interaction-grid">
         <div className="input-column">
           <DrawingBoard onDrawingChange={handleDrawingChange} />
+          <ImageUpload model={model} onInspect={handleUploadedResult} />
+          <p className="inference-source" aria-live="polite">{inputSource}</p>
           <PredictionPanel result={result} />
         </div>
         <NetworkDiagram model={model} result={result} />
