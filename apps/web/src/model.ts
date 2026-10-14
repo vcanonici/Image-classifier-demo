@@ -7,6 +7,7 @@ export interface ModelMetrics {
   testAccuracy: number;
   validationAccuracy: number;
   epochs: number;
+  baselineAccuracy?: number;
 }
 
 export interface ModelArtifact {

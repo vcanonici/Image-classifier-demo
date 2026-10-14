@@ -4,7 +4,7 @@ import hashlib
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import TypedDict
+from typing import NotRequired, TypedDict
 
 import torch
 from torch import Tensor
@@ -26,6 +26,7 @@ class MetricsArtifact(TypedDict):
     testAccuracy: float
     validationAccuracy: float
     epochs: int
+    baselineAccuracy: NotRequired[float]
 
 
 class ModelArtifact(TypedDict):
@@ -49,6 +50,7 @@ class ExportMetrics:
     test_accuracy: float
     validation_accuracy: float
     epochs: int
+    baseline_accuracy: float | None = None
 
 
 def export_model(model: MnistNetwork, metrics: ExportMetrics, output_path: Path) -> ModelArtifact:
@@ -75,6 +77,11 @@ def export_model(model: MnistNetwork, metrics: ExportMetrics, output_path: Path)
             "testAccuracy": round(metrics.test_accuracy, 6),
             "validationAccuracy": round(metrics.validation_accuracy, 6),
             "epochs": metrics.epochs,
+            **(
+                {"baselineAccuracy": round(metrics.baseline_accuracy, 6)}
+                if metrics.baseline_accuracy is not None
+                else {}
+            ),
         },
     }
     checksum = _checksum(payload_without_checksum)

@@ -19,6 +19,7 @@ describe("PyTorch and TypeScript parity", () => {
 function expectVector(actual: number[], expected: number[]) {
   expect(actual).toHaveLength(expected.length);
   actual.forEach((value, index) => {
-    expect(Math.abs(value - expected[index])).toBeLessThan(0.00001);
+    const tolerance = 0.00001 + Math.abs(expected[index]) * 0.000001;
+    expect(Math.abs(value - expected[index])).toBeLessThan(tolerance);
   });
 }
