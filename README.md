@@ -1,5 +1,7 @@
 # Rede Neural MNIST Interativa
 
+**[Abrir a demonstração](https://vcanonici.github.io/Image-classifier-demo/)**
+
 Demo educativa de uma rede neural `784 → 16 → 16 → 10`. Desenhe um dígito com mouse,
 caneta ou toque **ou carregue uma ou várias imagens locais** (PNG, JPEG e WebP) para
 classificação. Acompanhe os pixels, ativações ocultas, conexões e probabilidades da rede.
@@ -78,9 +80,14 @@ Linear(16, 10)
 Softmax apenas para exibição
 ```
 
-O treino usa Adam e cross-entropy, split determinístico de 55.000/5.000 imagens e exige pelo
-menos 95% de precisão no conjunto oficial de teste. O JSON público contém topologia,
-pré-processamento, pesos, biases, métricas, versão de schema e checksum SHA-256.
+O treino usa Adam e cross-entropy e split determinístico de 55.000/5.000 imagens. A meta
+padrão da rotina de treino é 95% de acurácia no conjunto oficial de teste; ela pode ser
+configurada. O artefato atualmente versionado registra **91,22% no teste** e **91,268% na
+validação**, após cinco épocas. Essas métricas registradas não são uma nova avaliação
+independente e não devem ser confundidas com a meta padrão.
+
+O JSON público contém topologia, pré-processamento, pesos, biases, métricas, versão de
+schema e checksum SHA-256.
 
 Dados e checkpoints PyTorch intermediários são ignorados. Apenas o artefato necessário para
 inferência no navegador é versionado.
@@ -109,10 +116,9 @@ dígitos ou fundos complexos podem continuar a causar erros de classificação.
 modelo JSON já carregado realiza a inferência em TypeScript. O nome do ficheiro é
 usado apenas como identificação visual, **nunca como entrada da rede neural**.
 
-Para testar as nove imagens do desafio da formação, descarregue-as de
-[Formacao-de-IA/Dia2/Desafio](https://github.com/vcanonici/Formacao-de-IA/tree/main/Dia2/Desafio)
-e selecione-as no campo de upload. As previsões são independentes dos rótulos nos nomes
-dos ficheiros; a aplicação não garante 9/9 em imagens fora do MNIST.
+Para experimentar o upload, selecione imagens locais de dígitos. As previsões são
+independentes dos nomes dos ficheiros. Imagens fora da distribuição do MNIST, como
+CAPTCHAs ou fotografias com fundos complexos, podem produzir resultados incorretos.
 
 ## Publicação
 
